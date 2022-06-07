@@ -1,69 +1,110 @@
-var botaoAdicionar = document.querySelector("#adcionar-paciente");
-
+var botaoAdicionar = document.querySelector("#adicionar-paciente");
 botaoAdicionar.addEventListener("click", function (event) {
-	event.preventDefault();
-	var formulario = document.querySelector("#form-adiciona");
+    event.preventDefault();
+    var form = document.querySelector("#form-adiciona");
 
-	var paciente = obterDadosFormulario(formulario);
+    var paciente = obtemPacientedoFormulario(form);
 
-	if(!validaPaciente(paciente)){
-		console.log("Paciente inválido");
-		return;
-	};
+    var pacienteTr = montarTr(paciente);
 
-	var pacienteTr = montarTr(paciente);
-	
-	var tabela = document.querySelector("#tabela-pacientes");
+    var erros = validaPaciente(paciente);
+    console.log(paciente.peso);
 
-	tabela.appendChild(pacienteTr);
+    if (erros.length > 0) {
+        exibirMensagemErro(erros);
+        return;
 
-	formulario.reset();
+    };
 
-})
+    var tabela = document.querySelector("#tabela-pacientes");
 
-function obterDadosFormulario(formulario) {
-	var paciente = {
-		nomeInput: formulario.nome.value,
-		pesoInput: formulario.peso.value,
-		alturaInput: formulario.altura.value,
-		gorduraInput: formulario.gordura.value, 
-		imc: calcularImc(formulario.peso.value, formulario.altura.value)
-	}
-	return paciente;
-}
-function montarTd(dado, classe){
-	var td = document.createElement("td");
-	td.textContent = dado;
-	td.classList.add(classe);
+    tabela.appendChild(pacienteTr);
 
-	return td;
-}
+    form.reset();
 
-function montarTr(paciente){
-	var pacienteTr = document.createElement("tr");
-	pacienteTr.classList.add("paciente");
+    var ul = document.querySelector("#mensagem-erro");
+    ul.innerHTML = "";
+});
 
-	var nomeTd = montarTd(paciente.nomeInput,"info-nome");
-	var pesoTd = montarTd(paciente.pesoInput,"info-peso");
-	var alturaTd = montarTd(paciente.alturaInput,"info-altura");
-	var gorduraTd = montarTd(paciente.gorduraInput,"info-gordura");
-	var imcTd = montarTd(paciente.imc,"info-imc");;
+function exibirMensagemErro(erros) {
+    var ul = document.querySelector("#mensagem-erro");
+    ul.innerHTML = "";
 
-	pacienteTr.appendChild(nomeTd);
-	pacienteTr.appendChild(pesoTd);
-	pacienteTr.appendChild(alturaTd);
-	pacienteTr.appendChild(gorduraTd);
-	pacienteTr.appendChild(imcTd);
+    erros.forEach(function (erro) {
+        var li = document.createElement("li");
+        li.textContent = erro;
+        li.classList.add("lista-erro");
+        ul.appendChild(li);
 
-	return pacienteTr;
+    });
+    // for (let i = 0; i < erros.length; i++) {
+    // var li = document.createElement("li");
+    // li.textContent = erros[i];
+    // li.classList.add("lista-erro");
+    // ul.appendChild(li);
+    // }
+    // return;
 }
 
-function validaPaciente(paciente){
+function obtemPacientedoFormulario(form) {
 
-	if (validaPeso(paciente.pesoInput)) {
-		return true;
-	}else{
-		return false;
-	}
+    var paciente = {
+        nome: form.nome.value,
+        peso: form.peso.value,
+        altura: form.altura.value,
+        gordura: form.gordura.value,
+        imc: calculoImc(form.peso.value, form.altura.value)
+    };
+    return paciente;
+}
 
+function montarTr(paciente) {
+    var pacienteTr = document.createElement("tr");
+    pacienteTr.classList.add("paciente");
+
+    pacienteTr.appendChild(montaTd(paciente.nome, "info-nome"));
+    pacienteTr.appendChild(montaTd(paciente.peso, "info-peso"));
+    pacienteTr.appendChild(montaTd(paciente.altura, "info-altura"));
+    pacienteTr.appendChild(montaTd(paciente.gordura, "info-gordura"));
+    pacienteTr.appendChild(montaTd(paciente.imc, "info-imc"));
+
+    return pacienteTr;
+};
+
+function montaTd(dado, classe) {
+
+    var td = document.createElement("td");
+    td.classList.add(classe);
+    td.textContent = dado;
+
+    return td;
+};
+
+function validaPaciente(paciente) {
+    var erros = []
+    if (paciente.nome.length == 0) {
+        erros.push("Nome não pode ser em branco");
+    };
+
+    if (!validaPeso(paciente.peso)) {
+        erros.push("Peso inválido !");
+    };
+
+    if (!validaAltura(paciente.altura)) {
+        erros.push("Altura inválido !");
+    };
+
+    if (paciente.altura.length == 0) {
+        erros.push("Altura não pode ser em branco!");
+    };
+
+    if (paciente.peso.length == 0) {
+        erros.push("Peso não pode ser em branco!");
+    };
+
+    if (paciente.gordura.length == 0) {
+        erros.push("Gordura não pode ser em branco!");
+    };
+
+    return erros;
 }
