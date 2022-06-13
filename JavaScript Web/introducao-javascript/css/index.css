@@ -149,3 +149,18 @@ button[disabled=disabled], button:disabled {
 	opacity: 0;
 	transition: 0.5s;
 }
+
+#filtrar-paciente{
+	width: 240px;
+	height: 30px;
+	margin-bottom: 10px;
+}
+
+.invisivel{
+	display: none;
+}
+
+#buscar-paciente{
+	width: 20%;
+	margin-bottom: 30px;;
+}
