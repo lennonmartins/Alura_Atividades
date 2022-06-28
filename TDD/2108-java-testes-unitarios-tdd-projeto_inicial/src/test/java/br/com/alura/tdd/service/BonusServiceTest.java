@@ -1,9 +1,11 @@
 package br.com.alura.tdd.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.IllegalFormatException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,9 +22,8 @@ public class BonusServiceTest {
         BonusService bonus = new BonusService();
         Funcionario funcionario = new Funcionario("Lennon", LocalDate.now(), new BigDecimal("25000.00"));
 
-        BigDecimal bonusAtual = bonus.calcularBonus(funcionario);
+        assertThrows(IllegalArgumentException.class, () ->  bonus.calcularBonus(funcionario)) ;
 
-        Assertions.assertEquals(bonusEsperado, bonusAtual);
     }
 
     @Test
