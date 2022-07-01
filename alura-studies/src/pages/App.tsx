@@ -1,12 +1,14 @@
 import React from 'react';
+import Cronometro from '../components/Cronometro';
 import Form from '../components/Form';
 import Lista from '../components/Lista';
-import  '../pages/style.scss';
+import style from './App.module.scss';
 
 function App() {
   return (
-    <div className="AppStyle">
+    <div className={style.AppStyle}>
       <Form/>
+      <Cronometro/>
       <Lista/>
     </div>
   );

@@ -1,8 +1,9 @@
-import React from 'react';
-import './style.scss'
+import React, { useState } from 'react';
+import Iten from './Iten';
+import style from './Lista.module.scss'
 
 export default function Lista() {
-    const tarefas = [{
+    const [tarefas, setTarefas ] = useState([{
         tarefa: 'React',
         tempo: '01:30:00'
     },
@@ -11,18 +12,26 @@ export default function Lista() {
         tempo: '02:00:00'
     },
     {
-        tarefa:'Java',
+        tarefa: 'Java',
         tempo: '01:00:00'
-    }]
+    }]);
     return (
-        <aside className="listaTarefas">
-            <h3>Estudo do dia</h3>
+        <aside className={style.listaTarefas}>
+            <h2
+            onClick={ () => { setTarefas([...tarefas, {tarefa: " to aprendendo", tempo: "05:00:00"}])}}
+            
+            >Estudo do dia</h2>
             <ul>
                 {tarefas.map((item, index) => (
-                    <li key={index} className="item" >
-                        <h3 >{item.tarefa}</h3>
-                        <span>{item.tempo}</span>
-                    </li>
+                    <Iten
+                        key={index}
+
+                        //essa opção
+                        tarefa={item.tarefa}
+                        tempo={item.tempo}
+
+                        // ou {...item}
+                    />
                 ))}
             </ul>
         </aside>
